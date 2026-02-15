@@ -83,6 +83,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case x86:            return "i386";
   case x86_64:         return "x86_64";
   case xcore:          return "xcore";
+  case icd10_b69:      return "icd10_b69";
   case xtensa:         return "xtensa";
   }
 
@@ -212,6 +213,8 @@ StringRef Triple::getArchTypePrefix(ArchType Kind) {
   case x86_64:      return "x86";
 
   case xcore:       return "xcore";
+
+  case icd10_b69:   return "icd10_b69";
 
   // NVPTX intrinsics are namespaced under nvvm.
   case nvptx:       return "nvvm";
@@ -462,6 +465,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("i386", x86)
     .Case("x86-64", x86_64)
     .Case("xcore", xcore)
+    .Case("icd10_b69", icd10_b69)
     .Case("nvptx", nvptx)
     .Case("nvptx64", nvptx64)
     .Case("amdil", amdil)
@@ -602,6 +606,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
           .Case("tce", Triple::tce)
           .Case("tcele", Triple::tcele)
           .Case("xcore", Triple::xcore)
+          .Case("icd10_b69", Triple::icd10_b69)
           .Case("nvptx", Triple::nvptx)
           .Case("nvptx64", Triple::nvptx64)
           .Case("amdil", Triple::amdil)
@@ -972,6 +977,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::thumbeb:
   case Triple::ve:
   case Triple::xcore:
+  case Triple::icd10_b69:
   case Triple::xtensa:
     return Triple::ELF;
 
@@ -1680,6 +1686,7 @@ unsigned Triple::getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::wasm32:
   case llvm::Triple::x86:
   case llvm::Triple::xcore:
+  case llvm::Triple::icd10_b69:
   case llvm::Triple::xtensa:
     return 32;
 
@@ -1790,6 +1797,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::wasm32:
   case Triple::x86:
   case Triple::xcore:
+  case Triple::icd10_b69:
   case Triple::xtensa:
     // Already 32-bit.
     break;
@@ -1841,6 +1849,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::tce:
   case Triple::tcele:
   case Triple::xcore:
+  case Triple::icd10_b69:
   case Triple::xtensa:
     T.setArch(UnknownArch);
     break;
@@ -1938,6 +1947,7 @@ Triple Triple::getBigEndianArchVariant() const {
   case Triple::x86:
   case Triple::x86_64:
   case Triple::xcore:
+  case Triple::icd10_b69:
   case Triple::ve:
   case Triple::csky:
   case Triple::xtensa:
@@ -2049,6 +2059,7 @@ bool Triple::isLittleEndian() const {
   case Triple::x86:
   case Triple::x86_64:
   case Triple::xcore:
+  case Triple::icd10_b69:
   case Triple::xtensa:
     return true;
   default:

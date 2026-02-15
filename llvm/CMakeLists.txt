@@ -499,6 +499,7 @@ set(LLVM_ALL_TARGETS
   WebAssembly
   X86
   XCore
+  ICD10_B69
   )
 
 set(LLVM_ALL_EXPERIMENTAL_TARGETS

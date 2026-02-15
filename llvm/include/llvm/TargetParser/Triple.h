@@ -85,6 +85,7 @@ public:
     x86,            // X86: i[3-9]86
     x86_64,         // X86-64: amd64, x86_64
     xcore,          // XCore: xcore
+    icd10_b69,      // ICD10_B69: don`t google me
     xtensa,         // Tensilica: Xtensa
     nvptx,          // NVPTX: 32-bit
     nvptx64,        // NVPTX: 64-bit
