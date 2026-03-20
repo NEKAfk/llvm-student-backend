@@ -1,6 +1,7 @@
 #ifndef LLVM_LIB_TARGET_ICD10_B69_ICD10_B69_H
 #define LLVM_LIB_TARGET_ICD10_B69_ICD10_B69_H
 
+#include "MCTargetDesc/ICD10_B69MCTargetDesc.h"
 #include "llvm/Support/raw_ostream.h"
 
 #define ICD10_B69_DUMP(Color)                                                        \
@@ -16,5 +17,6 @@
 #define ICD10_B69_DUMP_YELLOW ICD10_B69_DUMP(llvm::raw_ostream::YELLOW)
 #define ICD10_B69_DUMP_CYAN ICD10_B69_DUMP(llvm::raw_ostream::CYAN)
 #define ICD10_B69_DUMP_MAGENTA ICD10_B69_DUMP(llvm::raw_ostream::MAGENTA)
+#define ICD10_B69_DUMP_WHITE ICD10_B69_DUMP(llvm::raw_ostream::WHITE)
 
 #endif // LLVM_LIB_TARGET_ICD10_B69_ICD10_B69_H
