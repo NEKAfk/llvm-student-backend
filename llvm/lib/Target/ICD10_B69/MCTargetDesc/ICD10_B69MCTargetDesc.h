@@ -7,4 +7,8 @@
 #define GET_REGINFO_ENUM
 #include "ICD10_B69GenRegisterInfo.inc"
 
+// Defines symbolic names for the ICD10_B69 instructions.
+#define GET_INSTRINFO_ENUM
+#include "ICD10_B69GenInstrInfo.inc"
+
 #endif // LLVM_LIB_TARGET_ICD10_B69_MCTARGETDESC_ICD10_B69MCTARGETDESC_H
