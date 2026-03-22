@@ -20,7 +20,7 @@ ICD10_B69TargetMachine::ICD10_B69TargetMachine(const Target &T, const Triple &TT
                                    std::optional<Reloc::Model> RM,
                                    std::optional<CodeModel::Model> CM,
                                    CodeGenOptLevel OL, bool JIT)
-    : CodeGenTargetMachineImpl(T, "e-m:e-p:32:32-i8:8:32-i16:16:32-i64:64-n32",
+    : CodeGenTargetMachineImpl(T, "e-m:e-p:64:64-i8:8:64-i16:16:64-i32:32:64-n64",
                                TT, CPU, FS, Options, Reloc::Static,
                                getEffectiveCodeModel(CM, CodeModel::Small), OL),
       TLOF(std::make_unique<TargetLoweringObjectFileELF>()),

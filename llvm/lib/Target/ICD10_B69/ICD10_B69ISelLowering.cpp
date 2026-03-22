@@ -51,6 +51,7 @@ ICD10_B69TargetLowering::ICD10_B69TargetLowering(const TargetMachine &TM,
 
   setOperationAction(ISD::ADD, MVT::i64, Legal);
   setOperationAction(ISD::MUL, MVT::i64, Legal);
+  setOperationAction(ISD::SHL, MVT::i64, Legal);
   // ...
   setOperationAction(ISD::LOAD, MVT::i64, Legal);
   setOperationAction(ISD::STORE, MVT::i64, Legal);

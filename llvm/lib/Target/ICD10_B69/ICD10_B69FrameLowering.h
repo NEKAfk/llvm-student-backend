@@ -10,7 +10,7 @@ class ICD10_B69Subtarget;
 class ICD10_B69FrameLowering : public TargetFrameLowering {
 public:
   ICD10_B69FrameLowering(const ICD10_B69Subtarget &STI)
-      : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, Align(4), 0),
+      : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, Align(8), 0),
         STI(STI) {
     ICD10_B69_DUMP_GREEN
   }
