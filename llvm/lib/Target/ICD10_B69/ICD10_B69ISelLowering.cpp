@@ -38,7 +38,29 @@ ICD10_B69TargetLowering::ICD10_B69TargetLowering(const TargetMachine &TM,
                                      const ICD10_B69Subtarget &STI)
     : TargetLowering(TM), STI(STI) {
   ICD10_B69_DUMP_RED
-  addRegisterClass(MVT::i32, &ICD10_B69::GPRRegClass);
+  addRegisterClass(MVT::i64, &ICD10_B69::GPRRegClass);
+
+  computeRegisterProperties(STI.getRegisterInfo());
+
+  setStackPointerRegisterToSaveRestore(ICD10_B69::R1);
+
+  // setSchedulingPreference(Sched::Source);
+
+  for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc)
+    setOperationAction(Opc, MVT::i64, Expand);
+
+  setOperationAction(ISD::ADD, MVT::i64, Legal);
+  setOperationAction(ISD::MUL, MVT::i64, Legal);
+  // ...
+  setOperationAction(ISD::LOAD, MVT::i64, Legal);
+  setOperationAction(ISD::STORE, MVT::i64, Legal);
+
+  setOperationAction(ISD::Constant, MVT::i64, Legal);
+  setOperationAction(ISD::UNDEF, MVT::i64, Legal);
+
+  setOperationAction(ISD::BR_CC, MVT::i64, Custom);
+
+  setOperationAction(ISD::FRAMEADDR, MVT::i64, Legal);
 }
 
 const char *ICD10_B69TargetLowering::getTargetNodeName(unsigned Opcode) const {
@@ -106,7 +128,7 @@ SDValue ICD10_B69TargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI
     int FI =
         MF.getFrameInfo().CreateStackObject(Size, Alignment, /*isSS=*/false);
     SDValue FIPtr = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
-    SDValue SizeNode = DAG.getConstant(Size, DL, MVT::i32);
+    SDValue SizeNode = DAG.getConstant(Size, DL, MVT::i64);
 
     Chain = DAG.getMemcpy(Chain, DL, FIPtr, Arg, SizeNode, Alignment,
                           /*IsVolatile=*/false,
@@ -383,7 +405,7 @@ SDValue ICD10_B69TargetLowering::LowerFormalArguments(
 
   MachineFunction &MF = DAG.getMachineFunction();
   EVT PtrVT = getPointerTy(DAG.getDataLayout());
-  unsigned StackSlotSize = MVT(MVT::i32).getSizeInBits() / 8;
+  unsigned StackSlotSize = MVT(MVT::i64).getSizeInBits() / 8;
   // Used with vargs to acumulate store chains.
   std::vector<SDValue> OutChains;
 
@@ -460,7 +482,7 @@ SDValue ICD10_B69TargetLowering::LowerFormalArguments(
          ++I, VaArgOffset += StackSlotSize) {
       const Register Reg = RegInfo.createVirtualRegister(RC);
       RegInfo.addLiveIn(ArgRegs[I], Reg);
-      SDValue ArgValue = DAG.getCopyFromReg(Chain, DL, Reg, MVT::i32);
+      SDValue ArgValue = DAG.getCopyFromReg(Chain, DL, Reg, MVT::i64);
       FI = MFI.CreateFixedObject(StackSlotSize, VaArgOffset, true);
       SDValue PtrOff = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
       SDValue Store = DAG.getStore(Chain, DL, ArgValue, PtrOff,
