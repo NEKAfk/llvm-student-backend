@@ -8,6 +8,7 @@ namespace llvm {
 extern Target TheICD10_B69Target;
 
 class ICD10_B69TargetMachine : public CodeGenTargetMachineImpl {
+  std::unique_ptr<TargetLoweringObjectFile> TLOF;
 public:
   ICD10_B69TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                    StringRef FS, const TargetOptions &Options,
@@ -17,6 +18,7 @@ public:
   
   // Pass Pipeline Configuration
   TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
+  TargetLoweringObjectFile *getObjFileLowering() const override;
 };
 } // end namespace llvm
 

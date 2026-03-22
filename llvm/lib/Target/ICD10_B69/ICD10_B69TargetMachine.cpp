@@ -1,6 +1,7 @@
 #include "ICD10_B69TargetMachine.h"
 #include "ICD10_B69.h"
 #include "TargetInfo/ICD10_B69TargetInfo.h"
+#include "llvm/CodeGen/TargetLoweringObjectFileImpl.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
 #include "llvm/MC/TargetRegistry.h"
 #include <optional>
@@ -19,9 +20,10 @@ ICD10_B69TargetMachine::ICD10_B69TargetMachine(const Target &T, const Triple &TT
                                    std::optional<Reloc::Model> RM,
                                    std::optional<CodeModel::Model> CM,
                                    CodeGenOptLevel OL, bool JIT)
-    : CodeGenTargetMachineImpl(
-          T, "e-m:e-p:32:32-i8:8:32-i16:16:32-i64:64-n32", TT, CPU, FS, Options,
-          Reloc::Static, getEffectiveCodeModel(CM, CodeModel::Small), OL) {
+    : CodeGenTargetMachineImpl(T, "e-m:e-p:32:32-i8:8:32-i16:16:32-i64:64-n32",
+                               TT, CPU, FS, Options, Reloc::Static,
+                               getEffectiveCodeModel(CM, CodeModel::Small), OL),
+      TLOF(std::make_unique<TargetLoweringObjectFileELF>()) {
   ICD10_B69_DUMP_CYAN
   initAsmInfo();
 }
@@ -51,4 +53,9 @@ public:
 TargetPassConfig *ICD10_B69TargetMachine::createPassConfig(PassManagerBase &PM) {
   ICD10_B69_DUMP_CYAN
   return new ICD10_B69PassConfig(*this, PM);
+}
+
+TargetLoweringObjectFile *ICD10_B69TargetMachine::getObjFileLowering() const {
+  ICD10_B69_DUMP_CYAN
+  return TLOF.get();
 }
