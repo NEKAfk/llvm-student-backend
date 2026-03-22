@@ -4,7 +4,9 @@
 #include "ICD10_B69.h"
 #include "ICD10_B69FrameLowering.h"
 #include "ICD10_B69ISelLowering.h"
+#include "ICD10_B69InstrInfo.h"
 #include "ICD10_B69RegisterInfo.h"
+#include "llvm/CodeGen/SelectionDAGTargetInfo.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 
 #define GET_SUBTARGETINFO_HEADER
@@ -16,6 +18,8 @@ class ICD10_B69Subtarget : public ICD10_B69GenSubtargetInfo {
     ICD10_B69TargetLowering TLInfo;
     ICD10_B69FrameLowering FrameLowering;
     ICD10_B69RegisterInfo RegInfo;
+    ICD10_B69InstrInfo InstrInfo;
+    SelectionDAGTargetInfo TSInfo;
 public:
   ICD10_B69Subtarget(const Triple &TT, const std::string &CPU, const std::string &FS,
                const TargetMachine &TM);
@@ -37,6 +41,12 @@ public:
   const ICD10_B69RegisterInfo *getRegisterInfo() const override {
     ICD10_B69_DUMP_CYAN
     return &RegInfo;
+  }
+
+  const ICD10_B69InstrInfo *getInstrInfo() const override { return &InstrInfo; }
+  const SelectionDAGTargetInfo *getSelectionDAGInfo() const override {
+    ICD10_B69_DUMP_CYAN
+    return &TSInfo;
   }
 };
 

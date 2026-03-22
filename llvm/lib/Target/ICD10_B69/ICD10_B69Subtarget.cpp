@@ -13,6 +13,6 @@ using namespace llvm;
 ICD10_B69Subtarget::ICD10_B69Subtarget(const Triple &TT, const std::string &CPU,
                            const std::string &FS, const TargetMachine &TM)
     : ICD10_B69GenSubtargetInfo(TT, CPU, /*TuneCPU=*/CPU, FS), TLInfo(TM, *this),
-      FrameLowering(*this) {
+      FrameLowering(*this), InstrInfo() {
   ICD10_B69_DUMP_CYAN
 }
