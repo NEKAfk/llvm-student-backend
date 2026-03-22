@@ -1,6 +1,7 @@
 #include "ICD10_B69TargetMachine.h"
 #include "ICD10_B69.h"
 #include "TargetInfo/ICD10_B69TargetInfo.h"
+#include "llvm/CodeGen/TargetPassConfig.h"
 #include "llvm/MC/TargetRegistry.h"
 #include <optional>
 
@@ -23,4 +24,26 @@ ICD10_B69TargetMachine::ICD10_B69TargetMachine(const Target &T, const Triple &TT
           Reloc::Static, getEffectiveCodeModel(CM, CodeModel::Small), OL) {
   ICD10_B69_DUMP_CYAN
   initAsmInfo();
+}
+
+
+namespace {
+
+/// ICD10_B69 Code Generator Pass Configuration Options.
+class ICD10_B69PassConfig : public TargetPassConfig {
+public:
+  ICD10_B69PassConfig(ICD10_B69TargetMachine &TM, PassManagerBase &PM)
+      : TargetPassConfig(TM, PM) {}
+
+  bool addInstSelector() override {
+    ICD10_B69_DUMP_CYAN
+    return false;
+  }
+};
+
+} // end anonymous namespace
+
+TargetPassConfig *ICD10_B69TargetMachine::createPassConfig(PassManagerBase &PM) {
+  ICD10_B69_DUMP_CYAN
+  return new ICD10_B69PassConfig(*this, PM);
 }
