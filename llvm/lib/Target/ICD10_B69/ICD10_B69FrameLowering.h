@@ -5,11 +5,13 @@
 #include "llvm/CodeGen/TargetFrameLowering.h"
 
 namespace llvm {
+class ICD10_B69Subtarget;
 
 class ICD10_B69FrameLowering : public TargetFrameLowering {
 public:
-  explicit ICD10_B69FrameLowering()
-      : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, Align(4), 0) {
+  ICD10_B69FrameLowering(const ICD10_B69Subtarget &STI)
+      : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, Align(4), 0),
+        STI(STI) {
     ICD10_B69_DUMP_GREEN
   }
 
@@ -24,6 +26,9 @@ public:
   /// frame pointer register. For most targets this is true only if the function
   /// has variable sized allocas or if frame pointer elimination is disabled.
   bool hasFPImpl(const MachineFunction &MF) const override { return false; }
+
+private:
+  const ICD10_B69Subtarget &STI;
 };
 
 } // namespace llvm
