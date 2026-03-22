@@ -7,6 +7,7 @@ tablegen(LLVM ICD10_B69GenInstrInfo.inc -gen-instr-info)
 tablegen(LLVM ICD10_B69GenSubtargetInfo.inc -gen-subtarget)
 tablegen(LLVM ICD10_B69GenMCPseudoLowering.inc -gen-pseudo-lowering)
 tablegen(LLVM ICD10_B69GenDAGISel.inc -gen-dag-isel)
+tablegen(LLVM ICD10_B69GenCallingConv.inc -gen-callingconv)
 
 add_public_tablegen_target(ICD10_B69CommonTableGen)
 
