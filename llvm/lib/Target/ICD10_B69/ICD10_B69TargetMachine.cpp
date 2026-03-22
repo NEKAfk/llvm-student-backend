@@ -34,9 +34,14 @@ class ICD10_B69PassConfig : public TargetPassConfig {
 public:
   ICD10_B69PassConfig(ICD10_B69TargetMachine &TM, PassManagerBase &PM)
       : TargetPassConfig(TM, PM) {}
+  
+  ICD10_B69TargetMachine &getICD10_B69TargetMachine() const {
+    return getTM<ICD10_B69TargetMachine>();
+  }
 
   bool addInstSelector() override {
     ICD10_B69_DUMP_CYAN
+    addPass(createICD10_B69ISelDag(getICD10_B69TargetMachine(), getOptLevel()));
     return false;
   }
 };

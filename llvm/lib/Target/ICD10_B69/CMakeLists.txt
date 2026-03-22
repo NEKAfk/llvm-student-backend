@@ -6,6 +6,7 @@ tablegen(LLVM ICD10_B69GenRegisterInfo.inc -gen-register-info)
 tablegen(LLVM ICD10_B69GenInstrInfo.inc -gen-instr-info)
 tablegen(LLVM ICD10_B69GenSubtargetInfo.inc -gen-subtarget)
 tablegen(LLVM ICD10_B69GenMCPseudoLowering.inc -gen-pseudo-lowering)
+tablegen(LLVM ICD10_B69GenDAGISel.inc -gen-dag-isel)
 
 add_public_tablegen_target(ICD10_B69CommonTableGen)
 
@@ -15,6 +16,7 @@ add_llvm_target(ICD10_B69CodeGen
   ICD10_B69InstrInfo.cpp
   ICD10_B69Subtarget.cpp
   ICD10_B69AsmPrinter.cpp
+  ICD10_B69ISelDagToDag.cpp
 
   LINK_COMPONENTS
   CodeGen
@@ -23,6 +25,7 @@ add_llvm_target(ICD10_B69CodeGen
   Target
   ICD10_B69Info
   AsmPrinter
+  SelectionDAG
 
   ADD_TO_COMPONENT
   ICD10_B69
