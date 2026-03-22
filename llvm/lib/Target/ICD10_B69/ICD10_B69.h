@@ -22,6 +22,19 @@
 namespace llvm {
 class ICD10_B69TargetMachine;
 class FunctionPass;
+class ICD10_B69Subtarget;
+class AsmPrinter;
+class InstructionSelector;
+class MCInst;
+class MCOperand;
+class MachineInstr;
+class MachineOperand;
+class PassRegistry;
+
+bool lowerICD10_B69MachineInstrToMCInst(const MachineInstr *MI, MCInst &OutMI,
+                                  AsmPrinter &AP);
+bool LowerICD10_B69MachineOperandToMCOperand(const MachineOperand &MO,
+                                       MCOperand &MCOp, const AsmPrinter &AP);
 
 FunctionPass *createICD10_B69ISelDag(ICD10_B69TargetMachine &TM, CodeGenOptLevel OptLevel);
 

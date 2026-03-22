@@ -20,6 +20,7 @@ add_llvm_target(ICD10_B69CodeGen
   ICD10_B69AsmPrinter.cpp
   ICD10_B69ISelDagToDag.cpp
   ICD10_B69ISelLowering.cpp
+  ICD10_B69MCInstLower.cpp
 
   LINK_COMPONENTS
   CodeGen
