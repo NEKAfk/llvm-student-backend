@@ -3,6 +3,7 @@
 #include "TargetInfo/ICD10_B69TargetInfo.h"
 #include "llvm/MC/MCInstrInfo.h"
 #include "llvm/MC/MCRegisterInfo.h"
+#include "llvm/MC/MCSubtargetInfo.h"
 #include "llvm/MC/TargetRegistry.h"
 
 using namespace llvm;
@@ -12,6 +13,9 @@ using namespace llvm;
 
 #define GET_INSTRINFO_MC_DESC
 #include "ICD10_B69GenInstrInfo.inc"
+
+#define GET_SUBTARGETINFO_MC_DESC
+#include "ICD10_B69GenSubtargetInfo.inc"
 
 static MCRegisterInfo *createICD10_B69MCRegisterInfo(const Triple &TT) {
   ICD10_B69_DUMP_MAGENTA
@@ -27,6 +31,13 @@ static MCInstrInfo *createICD10_B69MCInstrInfo() {
   return X;
 }
 
+static MCSubtargetInfo *createICD10_B69MCSubtargetInfo(const Triple &TT,
+                                                 StringRef CPU, StringRef FS) {
+  ICD10_B69_DUMP_MAGENTA
+  return createICD10_B69MCSubtargetInfoImpl(TT, CPU, /*TuneCPU*/ CPU, FS);
+}
+
+
 // We need to define this function for linking succeed
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeICD10_B69TargetMC() {
   ICD10_B69_DUMP_MAGENTA
@@ -35,4 +46,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeICD10_B69TargetMC() {
   TargetRegistry::RegisterMCRegInfo(TheICD10_B69Target, createICD10_B69MCRegisterInfo);
   // Register the MC instruction info.
   TargetRegistry::RegisterMCInstrInfo(TheICD10_B69Target, createICD10_B69MCInstrInfo);
+    // Register the MC subtarget info.
+  TargetRegistry::RegisterMCSubtargetInfo(TheICD10_B69Target,
+                                          createICD10_B69MCSubtargetInfo);
 }
