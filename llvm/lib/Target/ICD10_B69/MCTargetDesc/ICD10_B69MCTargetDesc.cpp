@@ -1,5 +1,6 @@
 #include "MCTargetDesc/ICD10_B69Info.h"
 #include "ICD10_B69.h"
+#include "ICD10_B69InstPrinter.h"
 #include "ICD10_B69MCAsmInfo.h"
 #include "TargetInfo/ICD10_B69TargetInfo.h"
 #include "llvm/MC/MCDwarf.h"
@@ -51,6 +52,15 @@ static MCAsmInfo *createICD10_B69MCAsmInfo(const MCRegisterInfo &MRI,
   return MAI;
 }
 
+static MCInstPrinter *createICD10_B69MCInstPrinter(const Triple &T,
+                                             unsigned SyntaxVariant,
+                                             const MCAsmInfo &MAI,
+                                             const MCInstrInfo &MII,
+                                             const MCRegisterInfo &MRI) {
+  ICD10_B69_DUMP_MAGENTA
+  return new ICD10_B69InstPrinter(MAI, MII, MRI);
+}
+
 // We need to define this function for linking succeed
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeICD10_B69TargetMC() {
   ICD10_B69_DUMP_MAGENTA
@@ -63,4 +73,6 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeICD10_B69TargetMC() {
     // Register the MC subtarget info.
   TargetRegistry::RegisterMCSubtargetInfo(TheICD10_B69Target,
                                           createICD10_B69MCSubtargetInfo);
+  // Register the MCInstPrinter
+  TargetRegistry::RegisterMCInstPrinter(TheICD10_B69Target, createICD10_B69MCInstPrinter);
 }
