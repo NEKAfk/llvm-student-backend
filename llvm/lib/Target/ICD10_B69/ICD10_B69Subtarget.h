@@ -4,6 +4,7 @@
 #include "ICD10_B69.h"
 #include "ICD10_B69FrameLowering.h"
 #include "ICD10_B69ISelLowering.h"
+#include "ICD10_B69RegisterInfo.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 
 #define GET_SUBTARGETINFO_HEADER
@@ -14,6 +15,7 @@ namespace llvm {
 class ICD10_B69Subtarget : public ICD10_B69GenSubtargetInfo {
     ICD10_B69TargetLowering TLInfo;
     ICD10_B69FrameLowering FrameLowering;
+    ICD10_B69RegisterInfo RegInfo;
 public:
   ICD10_B69Subtarget(const Triple &TT, const std::string &CPU, const std::string &FS,
                const TargetMachine &TM);
@@ -30,6 +32,11 @@ public:
   const ICD10_B69FrameLowering *getFrameLowering() const override {
     ICD10_B69_DUMP_CYAN
     return &FrameLowering;
+  }
+
+  const ICD10_B69RegisterInfo *getRegisterInfo() const override {
+    ICD10_B69_DUMP_CYAN
+    return &RegInfo;
   }
 };
 
