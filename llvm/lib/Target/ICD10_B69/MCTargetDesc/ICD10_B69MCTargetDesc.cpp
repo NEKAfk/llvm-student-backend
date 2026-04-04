@@ -75,4 +75,6 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeICD10_B69TargetMC() {
                                           createICD10_B69MCSubtargetInfo);
   // Register the MCInstPrinter
   TargetRegistry::RegisterMCInstPrinter(TheICD10_B69Target, createICD10_B69MCInstPrinter);
+  // Register the MC Code Emitter.
+  TargetRegistry::RegisterMCCodeEmitter(TheICD10_B69Target, createICD10_B69MCCodeEmitter);
 }

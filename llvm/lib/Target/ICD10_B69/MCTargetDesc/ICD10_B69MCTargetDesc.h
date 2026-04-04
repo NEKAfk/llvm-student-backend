@@ -1,6 +1,14 @@
 #ifndef LLVM_LIB_TARGET_ICD10_B69_MCTARGETDESC_ICD10_B69MCTARGETDESC_H
 #define LLVM_LIB_TARGET_ICD10_B69_MCTARGETDESC_ICD10_B69MCTARGETDESC_H
 
+namespace llvm {
+class MCCodeEmitter;
+class MCContext;
+class MCInstrInfo;
+
+MCCodeEmitter *createICD10_B69MCCodeEmitter(const MCInstrInfo &MCII, MCContext &Ctx);
+} // namespace llvm
+
 // Defines symbolic names for ICD10_B69 registers.  This defines a mapping from
 // register name to register number.
 //
