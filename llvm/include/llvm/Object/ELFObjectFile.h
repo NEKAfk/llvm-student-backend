@@ -1347,6 +1347,8 @@ StringRef ELFObjectFile<ELFT>::getFileFormatName() const {
       return "elf64-ve";
     case ELF::EM_LOONGARCH:
       return "elf64-loongarch";
+    case ELF::EM_ICD10_B69:
+       return "elf64-sim";
     default:
       return "elf64-unknown";
     }
@@ -1438,6 +1440,8 @@ template <class ELFT> Triple::ArchType ELFObjectFile<ELFT>::getArch() const {
   case ELF::EM_CSKY:
     return Triple::csky;
 
+  case ELF::EM_ICD10_B69:
+    return Triple::icd10_b69;
   case ELF::EM_LOONGARCH:
     switch (EF.getHeader().e_ident[ELF::EI_CLASS]) {
     case ELF::ELFCLASS32:

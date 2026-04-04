@@ -1,6 +1,7 @@
 #ifndef LLVM_LIB_TARGET_ICD10_B69_MCTARGETDESC_ICD10_B69MCTARGETDESC_H
 #define LLVM_LIB_TARGET_ICD10_B69_MCTARGETDESC_ICD10_B69MCTARGETDESC_H
 
+#include <memory>
 namespace llvm {
 class MCCodeEmitter;
 class MCContext;
@@ -16,6 +17,8 @@ MCCodeEmitter *createICD10_B69MCCodeEmitter(const MCInstrInfo &MCII, MCContext &
 MCAsmBackend *createICD10_B69AsmBackend(const Target &T, const MCSubtargetInfo &STI,
                                   const MCRegisterInfo &MRI,
                                   const MCTargetOptions &Options);
+std::unique_ptr<MCObjectTargetWriter> createICD10_B69ELFObjectWriter(bool Is64Bit,
+                                                               uint8_t OSABI);
 } // namespace llvm
 
 // Defines symbolic names for ICD10_B69 registers.  This defines a mapping from

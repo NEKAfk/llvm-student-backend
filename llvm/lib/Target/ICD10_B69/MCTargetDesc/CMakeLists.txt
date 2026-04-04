@@ -4,6 +4,7 @@ add_llvm_component_library(LLVMICD10_B69Desc
   ICD10_B69InstPrinter.cpp
   ICD10_B69MCCodeEmitter.cpp
   ICD10_B69AsmBackend.cpp
+  ICD10_B69ELFObjectWriter.cpp
 
   LINK_COMPONENTS
   MC

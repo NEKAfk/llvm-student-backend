@@ -52,7 +52,10 @@ public:
   }
 
   std::unique_ptr<MCObjectTargetWriter>
-  createObjectTargetWriter() const override {}
+  createObjectTargetWriter() const override {
+    uint8_t OSABI = MCELFObjectTargetWriter::getOSABI(OSType);
+    return createICD10_B69ELFObjectWriter(true, OSABI);
+  }
 };
 
 } // end anonymous namespace
