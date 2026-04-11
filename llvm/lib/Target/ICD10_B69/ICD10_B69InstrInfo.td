@@ -129,3 +129,14 @@ let isBarrier = 1, isReturn = 1, isTerminator = 1 in
 def PseudoRET : ICD10_B69PseudoInst<(outs), (ins), "# PseudoRET",
                 [(ICD10_B69_ret)]>,
                 PseudoInstExpansion<(BR R0)>;
+
+// flush
+def FLUSH : ICD10_B69Inst<0xFF, (outs), (ins), "FLUSH", [(int_icd10b69_flush)]>;
+
+// putpixel
+def PUTPIXEL : ICD10_B69Inst<0xEE, (outs), (ins GPR:$r1, GPR:$r2, GPR:$r3),
+                      "PUTPIXEL $r1 $r2 $r3", [(int_icd10b69_putpixel GPR:$r1, GPR:$r2, GPR:$r3)]>;
+
+// rndmod
+def RND_MOD : ICD10_B69Inst<0xDD, (outs GPR:$r1), (ins simm24:$imm),
+                      "RND_MOD $r1 $imm", [(set GPR:$r1, (int_icd10b69_rndmod simm24:$imm))]>;
