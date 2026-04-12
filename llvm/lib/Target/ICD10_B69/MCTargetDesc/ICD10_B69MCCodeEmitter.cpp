@@ -100,7 +100,7 @@ unsigned ICD10_B69MCCodeEmitter::getSImmOpValue(const MCInst &MI, unsigned OpNo,
     return MO.getImm();
 
   assert(MO.isExpr() &&
-         "getSImm24OpValue expects only expressions or an immediate");
+         "getSImmOpValue expects only expressions or an immediate");
 
   const MCExpr *Expr = MO.getExpr();
 

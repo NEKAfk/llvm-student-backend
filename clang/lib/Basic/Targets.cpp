@@ -41,6 +41,7 @@
 #include "Targets/X86.h"
 #include "Targets/XCore.h"
 #include "Targets/Xtensa.h"
+#include "Targets/ICD10_B69.h"
 #include "clang/Basic/Diagnostic.h"
 #include "clang/Basic/DiagnosticFrontend.h"
 #include "llvm/ADT/StringExtras.h"
@@ -470,6 +471,8 @@ std::unique_ptr<TargetInfo> AllocateTarget(const llvm::Triple &Triple,
       return std::make_unique<RISCV64TargetInfo>(Triple, Opts);
     }
 
+  case llvm::Triple::icd10_b69:
+    return std::make_unique<ICD10_B69TargetInfo>(Triple, Opts);
   case llvm::Triple::sparc:
     switch (os) {
     case llvm::Triple::Linux:
