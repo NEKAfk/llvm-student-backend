@@ -13,7 +13,7 @@ public:
       : TargetInfo(Triple) {
     NoAsmVariants = true;
     LongLongAlign = 64;
-    SuitableAlign = 64;
+    SuitableAlign = 32;
     DoubleAlign = LongDoubleAlign = 64;
     SizeType = UnsignedLongLong;
     PtrDiffType = SignedLongLong;

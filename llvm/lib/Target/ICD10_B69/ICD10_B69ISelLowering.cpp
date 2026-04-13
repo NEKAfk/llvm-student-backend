@@ -39,6 +39,7 @@ ICD10_B69TargetLowering::ICD10_B69TargetLowering(const TargetMachine &TM,
     : TargetLowering(TM), STI(STI) {
   ICD10_B69_DUMP_RED
   addRegisterClass(MVT::i64, &ICD10_B69::GPRRegClass);
+  addRegisterClass(MVT::i32, &ICD10_B69::GPRRegClass);
 
   computeRegisterProperties(STI.getRegisterInfo());
 
@@ -46,8 +47,10 @@ ICD10_B69TargetLowering::ICD10_B69TargetLowering(const TargetMachine &TM,
 
   // setSchedulingPreference(Sched::Source);
 
-  for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc)
+  for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc) {
     setOperationAction(Opc, MVT::i64, Expand);
+    setOperationAction(Opc, MVT::i32, Expand);
+  }
 
   setOperationAction(ISD::ADD, MVT::i64, Legal);
   setOperationAction(ISD::MUL, MVT::i64, Legal);
@@ -57,6 +60,8 @@ ICD10_B69TargetLowering::ICD10_B69TargetLowering(const TargetMachine &TM,
   setOperationAction(ISD::STORE, MVT::i64, Legal);
 
   setOperationAction(ISD::Constant, MVT::i64, Legal);
+  setOperationAction(ISD::Constant, MVT::i32, Legal);
+  setOperationAction(ISD::UNDEF, MVT::i32, Legal);
   setOperationAction(ISD::UNDEF, MVT::i64, Legal);
 
   setOperationAction(ISD::BR_CC, MVT::i64, Custom);

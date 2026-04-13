@@ -19,7 +19,7 @@
  // ICD10_B69 Argument Calling Conventions
  //===----------------------------------------------------------------------===//
  def CC_ICD10_B69 : CallingConv<[
-   // Promote i8/i16 arguments to i64.
+   // Promote i8/i16 arguments to i32.
    CCIfType<[i8, i16], CCPromoteToType<i32>>,
  
    // The first 4 integer arguments are passed in integer registers.

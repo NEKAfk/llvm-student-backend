@@ -21,7 +21,7 @@ class SImmAsmOperand<int width> : AsmOperandClass {
   let DiagnosticType = !strconcat("Invalid", Name);
 }
 
-def simm16 : Operand<i64>, ImmLeaf<i64, [{return isInt<16>(Imm);}]> {
+def simm16 : Operand<i32>, ImmLeaf<i32, [{return isInt<16>(Imm);}]> {
   let ParserMatchClass = SImmAsmOperand<16>;
   let EncoderMethod = "getImmOpValue";
   let DecoderMethod = "decodeSImmOperand<16>";
@@ -53,53 +53,17 @@ def simm24 : Operand<i64>, ImmLeaf<i64, [{return isInt<24>(Imm);}]> {
 // ICD10_B69 Instructions
 //===----------------------------------------------------------------------===//
 
-// Arithmetic Instructions
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
-  def ADD : ICD10_B69Inst<0x10, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                          "ADD $rd, $rs1, $rs2",
-                          [(set GPR:$rd, (add GPR:$rs1, GPR:$rs2))]>;
-  
-  def ADDi : ICD10_B69Inst<0x11, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "ADDi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (add GPR:$rs1, simm24:$imm))]>;
-  
-  def SUBi : ICD10_B69Inst<0x12, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "SUBi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (sub GPR:$rs1, simm24:$imm))]>;
-  
-  def MULi : ICD10_B69Inst<0x13, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "MULi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (mul GPR:$rs1, simm24:$imm))]>;
-  
-  def SHLi : ICD10_B69Inst<0x14, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "SHLi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (shl GPR:$rs1, simm24:$imm))]>;
-  
-  def ANDi : ICD10_B69Inst<0x15, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "ANDi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (and GPR:$rs1, simm24:$imm))]>;
-  
-  def XOR : ICD10_B69Inst<0x16, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                          "XOR $rd, $rs1, $rs2",
-                          [(set GPR:$rd, (xor GPR:$rs1, GPR:$rs2))]>;
-  
-  def XORi : ICD10_B69Inst<0x17, (outs GPR:$rd), (ins GPR:$rs1, simm24:$imm),
-                           "XORi $rd, $rs1, $imm",
-                           [(set GPR:$rd, (xor GPR:$rs1, simm24:$imm))]>;
-  
-  def OR : ICD10_B69Inst<0x18, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                         "OR $rd, $rs1, $rs2",
-                         [(set GPR:$rd, (or GPR:$rs1, GPR:$rs2))]>;
-}
-
 // Move Instructions
 let isAsCheapAsAMove = 1, isReMaterializable = 1 in {
   def MOV : ICD10_B69Inst<0x20, (outs GPR:$rd), (ins GPR:$rs1),
                           "MOV $rd, $rs1",
-                          [(set GPR:$rd, GPR:$rs1)]>;
+                          [(set GPR:$rd, (i64 GPR:$rs1))]>;
   
-  def MOVi : ICD10_B69Inst<0x21, (outs GPR:$rd), (ins simm24:$imm),
+  def MOVi : ICD10_B69Inst<0x21, (outs GPR:$rd), (ins simm16:$imm),
                            "MOVi $rd, $imm",
+                           [(set GPR:$rd, simm16:$imm)]>;
+  def MOVLi : ICD10_B69Inst<0x22, (outs GPR:$rd), (ins simm24:$imm),
+                           "MOVLi $rd, $imm",
                            [(set GPR:$rd, simm24:$imm)]>;
 }
 
@@ -138,5 +102,5 @@ def PUTPIXEL : ICD10_B69Inst<0xEE, (outs), (ins GPR:$r1, GPR:$r2, GPR:$r3),
                       "PUTPIXEL $r1 $r2 $r3", [(int_icd10b69_putpixel GPR:$r1, GPR:$r2, GPR:$r3)]>;
 
 // rndmod
-def RND_MOD : ICD10_B69Inst<0xDD, (outs GPR:$r1), (ins simm24:$imm),
-                      "RND_MOD $r1 $imm", [(set GPR:$r1, (int_icd10b69_rndmod simm24:$imm))]>;
+def RND_MOD : ICD10_B69Inst<0xDD, (outs GPR:$r1), (ins simm16:$imm),
+                      "RND_MOD $r1 $imm", [(set GPR:$r1, (int_icd10b69_rndmod simm16:$imm))]>;

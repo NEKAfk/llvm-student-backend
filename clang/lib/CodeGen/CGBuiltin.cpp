@@ -44,6 +44,7 @@
 #include "llvm/IR/DataLayout.h"
 #include "llvm/IR/InlineAsm.h"
 #include "llvm/IR/Intrinsics.h"
+#include "llvm/IR/IntrinsicsICD10_B69.h"
 #include "llvm/IR/IntrinsicsAArch64.h"
 #include "llvm/IR/IntrinsicsAMDGPU.h"
 #include "llvm/IR/IntrinsicsARM.h"
@@ -6640,12 +6641,41 @@ static Value *EmitTargetArchBuiltinExpr(CodeGenFunction *CGF,
     return CGF->EmitRISCVBuiltinExpr(BuiltinID, E, ReturnValue);
   case llvm::Triple::spirv:
     return CGF->EmitSPIRVBuiltinExpr(BuiltinID, E);
+  case llvm::Triple::icd10_b69:
+    return CGF->EmitICD10_B69BuiltinExpr(BuiltinID, E);
   case llvm::Triple::spirv64:
     if (CGF->getTarget().getTriple().getOS() != llvm::Triple::OSType::AMDHSA)
       return nullptr;
     return CGF->EmitAMDGPUBuiltinExpr(BuiltinID, E);
   default:
     return nullptr;
+  }
+}
+
+Value *CodeGenFunction::EmitICD10_B69BuiltinExpr(unsigned BuiltinID,
+                                                   const CallExpr *E) {
+  switch (BuiltinID) {
+    case clang::ICD10_B69::BIflush: {
+      llvm::Function *F = CGM.getIntrinsic(llvm::Intrinsic::icd10b69_flush);
+      return Builder.CreateCall(F);
+    }
+    case clang::ICD10_B69::BIputPixel: {
+      Value *X = EmitScalarExpr(E->getArg(0));
+      Value *Y = EmitScalarExpr(E->getArg(1));
+      Value *Color = EmitScalarExpr(E->getArg(2));
+      
+      llvm::Function *F = CGM.getIntrinsic(llvm::Intrinsic::icd10b69_putpixel);
+      return Builder.CreateCall(F, {X, Y, Color});
+    }
+
+    case clang::ICD10_B69::BIrandMod: {
+      Value *Mod = EmitScalarExpr(E->getArg(0));
+      
+      llvm::Function *F = CGM.getIntrinsic(llvm::Intrinsic::icd10b69_rndmod);
+      return Builder.CreateCall(F, Mod);
+    }
+    default:
+      return nullptr;
   }
 }
 
